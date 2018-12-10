@@ -14,6 +14,7 @@
 	if (!instance)\
 		return -1;
 
+#if WITH_EDITORONLY_DATA
 static FFoliageInstance* get_foliage_instance(ue_PyFFoliageInstance *self)
 {
 	if (!self->foliage_actor.IsValid())
@@ -34,10 +35,10 @@ static FFoliageInstance* get_foliage_instance(ue_PyFFoliageInstance *self)
 	{
 		return &info.Instances[self->instance_id];
 	}
-
 	PyErr_SetString(PyExc_Exception, "invalid foliage instance id");
 	return nullptr;
 }
+#endif
 
 static PyObject *ue_PyFFoliageInstance_str(ue_PyFFoliageInstance *self)
 {
@@ -45,6 +46,7 @@ static PyObject *ue_PyFFoliageInstance_str(ue_PyFFoliageInstance *self)
 		self->instance_id);
 }
 
+#if WITH_EDITOR
 static PyObject *py_ue_ffoliage_instance_get_location(ue_PyFFoliageInstance *self, void *closure)
 {
 	get_instance(self);
@@ -90,9 +92,9 @@ static int py_ue_ffoliage_instance_set_rotation(ue_PyFFoliageInstance *self, PyO
 		}
 	}
 	PyErr_SetString(PyExc_TypeError, "value is not an FRotator");
+
 	return -1;
 }
-
 static PyObject *py_ue_ffoliage_instance_get_draw_scale3d(ue_PyFFoliageInstance *self, void *closure)
 {
 	get_instance(self);
@@ -149,9 +151,11 @@ static PyObject *py_ue_ffoliage_instance_get_base_component(ue_PyFFoliageInstanc
 }
 #endif
 
+#endif
 
 
 static PyGetSetDef ue_PyFFoliageInstance_getseters[] = {
+#if WITH_EDITOR
 	{ (char *)"location", (getter)py_ue_ffoliage_instance_get_location,  (setter)py_ue_ffoliage_instance_set_location, (char *)"", NULL },
 	{ (char *)"draw_scale3d", (getter)py_ue_ffoliage_instance_get_draw_scale3d, nullptr, (char *)"", NULL },
 	{ (char *)"flags", (getter)py_ue_ffoliage_instance_get_flags, nullptr, (char *)"", NULL },
@@ -165,9 +169,11 @@ static PyGetSetDef ue_PyFFoliageInstance_getseters[] = {
 #if ENGINE_MINOR_VERSION > 19
 	{ (char *)"base_component", (getter)py_ue_ffoliage_instance_get_base_component, nullptr, (char *)"", NULL },
 #endif
+#endif
 	{ NULL }  /* Sentinel */
 };
 
+#if WITH_EDITOR
 static PyObject *py_ue_ffoliage_instance_get_instance_world_transform(ue_PyFFoliageInstance *self, PyObject * args)
 {
 	get_instance(self);
@@ -194,11 +200,13 @@ static PyObject *py_ue_ffoliage_instance_align_to_normal(ue_PyFFoliageInstance *
 
 	Py_RETURN_NONE;
 }
-
+#endif
 
 static PyMethodDef ue_PyFFoliageInstance_methods[] = {
+#if WITH_EDITOR
 	{ "get_instance_world_transform", (PyCFunction)py_ue_ffoliage_instance_get_instance_world_transform, METH_VARARGS, "" },
 	{ "align_to_normal", (PyCFunction)py_ue_ffoliage_instance_align_to_normal, METH_VARARGS, "" },
+#endif
 	{ NULL }  /* Sentinel */
 };
 

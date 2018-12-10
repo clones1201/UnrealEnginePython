@@ -324,7 +324,8 @@ void FUnrealEnginePythonModule::StartupModule()
 		IniValue.ParseIntoArray(ImportModules, separators, 3);
 	}
 
-	FString ProjectScriptsPath = FPaths::Combine(*PROJECT_CONTENT_DIR, UTF8_TO_TCHAR("Scripts"));
+	//FString ProjectScriptsPath = FPaths::Combine(*PROJECT_CONTENT_DIR, UTF8_TO_TCHAR("Scripts"));
+	const FString ProjectScriptsPath = FPaths::Combine(FPaths::ProjectDir(), UTF8_TO_TCHAR("Scripts"));
 	if (!FPaths::DirectoryExists(ProjectScriptsPath))
 	{
 		FPlatformFileManager::Get().GetPlatformFile().CreateDirectory(*ProjectScriptsPath);
@@ -347,7 +348,6 @@ void FUnrealEnginePythonModule::StartupModule()
 		}
 	}
 #endif
-
 	if (ZipPath.IsEmpty())
 	{
 		ZipPath = FPaths::Combine(*PROJECT_CONTENT_DIR, UTF8_TO_TCHAR("ue_python.zip"));
